@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="base_spacing">8dp</dimen>
+    <dimen name="bottom_sheet_peekHeight">56dp</dimen>
+    <dimen name="bottomImage_spacing">200dp</dimen>
+    <dimen name="cornerRadius">8dp</dimen>
+    <dimen name="border">1dp</dimen>
+    <dimen name="titleTextSize">20sp</dimen>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.MainFragment">
+
+    <ImageView
+        android:id="@+id/result_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/base_spacing"
+        android:layout_marginBottom="@dimen/bottomImage_spacing"
+        android:layout_marginRight="@dimen/base_spacing"
+        android:contentDescription="@string/result_image" />
+
+    <include
+        layout="@layout/bottom_sheet"
+        android:fitsSystemWindows="true"
+        android:visibility="visible" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

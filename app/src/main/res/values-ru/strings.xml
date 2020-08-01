@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Тестовое задание</string>
+    <string name="options_menu_item_send">Отправить</string>
+    <string name="options_menu_item_reset">Сбросить</string>
+    <string name="options_menu_item_select_random">Случайно</string>
+    <string name="images">Изображения</string>
+    <string name="result_image">Полученное изображение</string>
+</resources>

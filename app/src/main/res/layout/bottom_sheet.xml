@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/top_rounded_coners_layout"
+    android:backgroundTint="@color/colorPrimaryDark"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="@dimen/bottom_sheet_peekHeight"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    tools:showIn="@layout/main_fragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_sheet_peekHeight"
+        android:layout_gravity="top"
+        android:gravity="center"
+        android:text="@string/images"
+        android:textAlignment="center"
+        android:textColor="@color/baseTextColor"
+        android:textSize="@dimen/titleTextSize" />
+
+    <GridView
+        android:id="@+id/image_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:nestedScrollingEnabled="true"
+        android:numColumns="3"
+        android:stretchMode="columnWidth" />
+</LinearLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.velichkomarija.testpuzzle.CustomImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/base_spacing"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_coners_layout"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

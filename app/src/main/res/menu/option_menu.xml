@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_send"
+        android:title="@string/options_menu_item_send"
+        android:icon="@drawable/ic_send_black_24dp" />
+
+    <item
+        android:id="@+id/action_reset"
+        android:title="@string/options_menu_item_reset"
+        android:icon="@drawable/ic_reset_black_24dp" />
+
+    <item
+        android:id="@+id/action_select_random"
+        android:title="@string/options_menu_item_select_random"
+        android:icon="@drawable/ic_random_black_24dp" />
+</menu>

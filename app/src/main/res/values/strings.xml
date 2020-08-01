@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Test puzzle</string>
+    <string name="options_menu_item_send">Send</string>
+    <string name="options_menu_item_reset">Reset</string>
+    <string name="options_menu_item_select_random">Select a random</string>
+    <string name="images">Images</string>
+    <string name="result_image">Result image</string>
+</resources>
