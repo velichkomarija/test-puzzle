@@ -11,7 +11,11 @@ import com.velichkomarija.testpuzzle.ImageSource
 import com.velichkomarija.testpuzzle.R
 import kotlinx.android.synthetic.main.image_item.view.*
 
-class ImageAdapter(private val context: Context, private val itemList: List<ImageSource>) :
+class ImageAdapter(
+    private val context: Context,
+    private val itemList: List<ImageSource>,
+    private val clickListener: (ImageSource) -> Unit
+) :
     BaseAdapter() {
 
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
@@ -28,7 +32,7 @@ class ImageAdapter(private val context: Context, private val itemList: List<Imag
             .into(itemView.image)
 
         itemView.setOnClickListener {
-            element.isCheck= !element.isCheck
+            clickListener.invoke(element)
         }
 
         return itemView

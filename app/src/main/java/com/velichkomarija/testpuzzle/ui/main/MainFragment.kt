@@ -9,9 +9,11 @@ import android.view.*
 import android.widget.GridView
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.velichkomarija.testpuzzle.ImageSource
+import com.velichkomarija.testpuzzle.MainViewModelFactory
 import com.velichkomarija.testpuzzle.R
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -27,8 +29,7 @@ class MainFragment : Fragment() {
     private lateinit var adapter: ImageAdapter
     private lateinit var viewModel: MainViewModel
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
-    private lateinit var list: ArrayList<ImageSource>
-    private lateinit var mutableCheckImage: MutableList<Drawable>
+    private lateinit var list: List<ImageSource>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,12 +37,12 @@ class MainFragment : Fragment() {
             val listAssets = context.assets.list("img")
 
             if (listAssets != null) {
-                mutableCheckImage = ArrayList(listAssets.size)
                 list = ArrayList(listAssets.size)
                 for (item in listAssets) {
-                    list.add(ImageSource(item))
+                    (list as ArrayList<ImageSource>).add(ImageSource(item))
                 }
-                adapter = ImageAdapter(context, list)
+                adapter =
+                    ImageAdapter(context, list) { viewModel.handleSelectedItem(it.sourceString) }
             }
         } catch (e: IOException) {
             Log.e("MainFragment", "IO Exception")
@@ -53,31 +54,21 @@ class MainFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initViewModel()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         val view = inflater.inflate(R.layout.main_fragment, container, false)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        for (item in list) {
-            if (item.isCheck) {
-                val drawable = Drawable.createFromStream(
-                    context?.assets?.open("img/" + item.sourceString),
-                    null
-                )
-                mutableCheckImage.add(drawable)
-            }
-        }
-
-        val layer = LayerDrawable(mutableCheckImage.toTypedArray())
-
-        result_image.setImageDrawable(layer)
 
         sheetBehavior = BottomSheetBehavior.from<LinearLayout>(bottom_sheet)
         sheetBehavior.isFitToContents = false
@@ -88,10 +79,24 @@ class MainFragment : Fragment() {
         grid.adapter = adapter
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun initViewModel() {
+        viewModel =
+            ViewModelProviders.of(this, MainViewModelFactory(list)).get(MainViewModel::class.java)
+        viewModel.getImages().observe(viewLifecycleOwner, Observer {
+
+            val mutableCheckImage = mutableListOf<Drawable>()
+
+            for (item in it) {
+                val drawable = Drawable.createFromStream(
+                    context?.assets?.open("img/" + item.sourceString),
+                    null
+                )
+                mutableCheckImage.add(drawable)
+            }
+
+            val layer = LayerDrawable(mutableCheckImage.toTypedArray())
+            result_image.setImageDrawable(layer)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -106,7 +111,6 @@ class MainFragment : Fragment() {
                 true
             }
             R.id.action_reset -> {
-                mutableCheckImage.clear()
                 result_image.invalidate()
                 true
             }
