@@ -19,16 +19,19 @@ class MainViewModel(list: List<ImageSource>) : ViewModel() {
 
     fun getImages(): LiveData<List<ImageSource>> = images
 
-    fun handleSelectedItem(sourcePath: String) {
+    fun handleInvalidate() {
 
-//        if(listImages.value != null) {
-//            for (item in listImages.value!!) {
-//                if (item.sourceString == sourcePath) {
-//                    item.isCheck != item.isCheck
-//                }
-//            }
+        for (item in listImages.value!!){
+            item.isCheck = false
+        }
+
+//        listImages.value?.forEach {
+//            it.isCheck = false
 //        }
+//        return listImages.value?.map { it }
+    }
 
+    fun handleSelectedItem(sourcePath: String) {
         listImages.value = listImages.value?.map {
             if (it.sourceString == sourcePath) {
                 it.isCheck = !it.isCheck

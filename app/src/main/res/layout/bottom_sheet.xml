@@ -30,5 +30,6 @@
         android:scrollbarAlwaysDrawVerticalTrack="false"
         android:nestedScrollingEnabled="true"
         android:numColumns="3"
+        android:scrollingCache="false"
         android:stretchMode="columnWidth" />
 </LinearLayout>

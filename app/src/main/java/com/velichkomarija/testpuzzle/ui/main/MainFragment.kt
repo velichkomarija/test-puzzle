@@ -1,13 +1,15 @@
 package com.velichkomarija.testpuzzle.ui.main
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.GridView
+import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -30,6 +32,7 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var list: List<ImageSource>
+    private val mutableCheckImage = mutableMapOf<String, Drawable>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,7 +45,10 @@ class MainFragment : Fragment() {
                     (list as ArrayList<ImageSource>).add(ImageSource(item))
                 }
                 adapter =
-                    ImageAdapter(context, list) { viewModel.handleSelectedItem(it.sourceString) }
+                    ImageAdapter(
+                        context,
+                        list as ArrayList<ImageSource>
+                    ) { viewModel.handleSelectedItem(it.sourceString) }
             }
         } catch (e: IOException) {
             Log.e("MainFragment", "IO Exception")
@@ -74,29 +80,41 @@ class MainFragment : Fragment() {
         sheetBehavior.isFitToContents = false
         sheetBehavior.halfExpandedRatio = 0.4f
 
-        val bottomSheet = view.findViewById<LinearLayout>(R.id.bottom_sheet)
-        val grid = bottomSheet.findViewById<GridView>(R.id.image_grid_view)
-        grid.adapter = adapter
+        image_grid_view.adapter = adapter
     }
 
     private fun initViewModel() {
+
         viewModel =
             ViewModelProviders.of(this, MainViewModelFactory(list)).get(MainViewModel::class.java)
-        viewModel.getImages().observe(viewLifecycleOwner, Observer {
+        viewModel.getImages()
+            .observe(viewLifecycleOwner, Observer {
+                if (it.size > mutableCheckImage.size) {
+                    for (item in it) {
+                        // можно было бы заменить putIfAbsent,
+                        // но минимальную  версию необходмо будет поднять до 24
+                        if (!mutableCheckImage.containsKey(item.sourceString)) {
+                            val drawable = Drawable.createFromStream(
+                                context?.assets?.open("img/" + item.sourceString),
+                                null
+                            )
+                            mutableCheckImage[item.sourceString] = drawable
+                        }
+                    }
+                } else {
+                    mutableCheckImage.clear()
+                    for (item in it) {
+                        val drawable = Drawable.createFromStream(
+                            context?.assets?.open("img/" + item.sourceString),
+                            null
+                        )
+                        mutableCheckImage[item.sourceString] = drawable
+                    }
+                }
 
-            val mutableCheckImage = mutableListOf<Drawable>()
-
-            for (item in it) {
-                val drawable = Drawable.createFromStream(
-                    context?.assets?.open("img/" + item.sourceString),
-                    null
-                )
-                mutableCheckImage.add(drawable)
-            }
-
-            val layer = LayerDrawable(mutableCheckImage.toTypedArray())
-            result_image.setImageDrawable(layer)
-        })
+                val layer = LayerDrawable(mutableCheckImage.values.toTypedArray())
+                result_image.setImageDrawable(layer)
+            })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -111,10 +129,15 @@ class MainFragment : Fragment() {
                 true
             }
             R.id.action_reset -> {
-                result_image.invalidate()
+                image_grid_view.adapter = adapter
+                mutableCheckImage.clear()
+                result_image.setImageDrawable(LayerDrawable(mutableCheckImage.values.toTypedArray()))
+                viewModel.handleInvalidate()
                 true
             }
             R.id.action_select_random -> {
+                adapter.selectRandomItem()
+                image_grid_view.invalidate()
                 true
             }
             else -> super.onOptionsItemSelected(item)
