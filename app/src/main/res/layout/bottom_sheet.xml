@@ -10,6 +10,8 @@
     android:orientation="vertical"
     app:behavior_hideable="false"
     app:behavior_peekHeight="@dimen/bottom_sheet_peekHeight"
+    app:behavior_halfExpandedRatio="0.4"
+    app:behavior_fitToContents="false"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     tools:showIn="@layout/main_fragment">
 
@@ -23,7 +25,7 @@
         android:textColor="@color/baseTextColor"
         android:textSize="@dimen/titleTextSize" />
 
-    <GridView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/image_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

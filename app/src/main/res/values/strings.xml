@@ -5,4 +5,7 @@
     <string name="options_menu_item_select_random">Select a random</string>
     <string name="images">Images</string>
     <string name="result_image">Result image</string>
+    <string name="send_via">Send to</string>
+    <string name="image">Image</string>
+    <string name="package_name" translatable="false">com.velichkomarija.testpuzzle</string>
 </resources>

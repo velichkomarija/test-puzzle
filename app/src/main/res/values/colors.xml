@@ -3,6 +3,6 @@
     <color name="colorPrimary">#EEEEEE</color>
     <color name="colorPrimaryDark">#878C87</color>
     <color name="colorAccent">#43A047</color>
-    <color name="baseTextColor">#000000</color>
+    <color name="baseTextColor">#FFFFFF</color>
     <color name="borderImageColor">#707370</color>
 </resources>

@@ -5,4 +5,6 @@
     <string name="options_menu_item_select_random">Случайно</string>
     <string name="images">Изображения</string>
     <string name="result_image">Полученное изображение</string>
+    <string name="send_via">Отправить с помощью</string>
+    <string name="image">Часть изображения</string>
 </resources>
